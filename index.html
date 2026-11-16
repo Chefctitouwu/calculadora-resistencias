@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f6f2">
+  <meta name="description" content="Calculadora de resistencias por código de colores de 4, 5 y 6 bandas.">
+  <title>Resistencia — calculadora por código de colores</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="calculator.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Resistencia, inicio"><span class="brand-mark">R</span><span>resistencia<span class="brand-dot">.</span></span></a>
+    <nav aria-label="Navegación principal"><a href="#calculadora">Calculadora</a><a href="#referencia">Colores</a></nav>
+    <span class="status"><i></i> Herramienta abierta</span>
+  </header>
+
+  <main id="inicio">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">ELECTRÓNICA · GUÍA RÁPIDA</p>
+      <h1 id="page-title">Cada color<br>cuenta una historia<span>.</span></h1>
+      <p class="intro-copy">Encuentra el valor de una resistencia al instante. Elige sus bandas o busca los colores para un valor conocido.</p>
+      <div class="intro-meta"><span>◉ &nbsp;4, 5 y 6 bandas</span><span>↗ &nbsp;Lista para cualquier pantalla</span></div>
+    </section>
+
+    <section class="calculator card" id="calculadora" aria-labelledby="calc-title">
+      <div class="section-heading"><div><p class="eyebrow">CALCULADORA</p><h2 id="calc-title">Vamos a descifrarla</h2></div><span class="step-label">01 <span>/</span> 02</span></div>
+      <div class="mode-tabs" role="tablist" aria-label="Modo de cálculo">
+        <button type="button" class="mode-tab active" id="direct-tab" role="tab" aria-selected="true" aria-controls="direct-panel">Tengo una resistencia</button>
+        <button type="button" class="mode-tab" id="inverse-tab" role="tab" aria-selected="false" aria-controls="inverse-panel">Busco un valor</button>
+      </div>
+      <section id="direct-panel" role="tabpanel" aria-labelledby="direct-tab">
+        <div class="controls-row">
+          <label class="field-label" for="band-count">Número de bandas</label>
+          <div class="segmented" role="group" aria-label="Número de bandas"><button type="button" data-bands="4" class="selected" aria-pressed="true">4</button><button type="button" data-bands="5" aria-pressed="false">5</button><button type="button" data-bands="6" aria-pressed="false">6</button></div>
+        </div>
+        <div class="resistor-stage" aria-label="Vista previa de las bandas seleccionadas"><div class="resistor-lead"></div><div class="resistor-body"><span class="cap left-cap"></span><div id="band-preview" class="band-preview"></div><span class="cap right-cap"></span></div><div class="resistor-lead"></div></div>
+        <div id="band-fields" class="band-fields"></div>
+        <div class="result-panel" aria-live="polite" aria-atomic="true"><div><p class="result-kicker">VALOR DE LA RESISTENCIA</p><div id="result-value" class="result-value">— <span>Ω</span></div><p id="result-range" class="result-range">Selecciona los colores de las bandas.</p></div><button id="copy-result" class="copy-button" type="button" aria-label="Copiar resultado" title="Copiar resultado">⧉</button></div>
+      </section>
+      <section id="inverse-panel" role="tabpanel" aria-labelledby="inverse-tab" hidden>
+        <p class="panel-intro">Indica el valor y la tolerancia. Te mostraremos una combinación de colores equivalente.</p>
+        <div class="inverse-fields"><label class="input-wrap">Valor nominal<div class="inline-input"><input id="target-value" type="number" min="0.01" step="any" value="1000" inputmode="decimal" aria-describedby="inverse-error"><select id="target-unit" aria-label="Unidad del valor"><option value="1">Ω</option><option value="1000" selected>kΩ</option><option value="1000000">MΩ</option></select></div></label><label class="input-wrap">Tolerancia<select id="target-tolerance"><option value="1">±1%</option><option value="2">±2%</option><option value="5" selected>±5%</option><option value="10">±10%</option><option value="0.5">±0.5%</option><option value="0.25">±0.25%</option><option value="0.1">±0.1%</option><option value="0.05">±0.05%</option></select></label></div>
+        <p id="inverse-error" class="error-message" role="alert"></p><div class="inverse-answer" aria-live="polite"><div class="resistor-stage compact"><div class="resistor-lead"></div><div class="resistor-body"><span class="cap left-cap"></span><div id="inverse-preview" class="band-preview"></div><span class="cap right-cap"></span></div><div class="resistor-lead"></div></div><div><p class="result-kicker">COMBINACIÓN SUGERIDA</p><strong id="inverse-result">1 kΩ ±5%</strong><p id="inverse-bands-label" class="result-range">Café · negro · rojo · dorado</p></div></div><p class="hint">La combinación se actualiza mientras escribes.</p>
+      </section>
+    </section>
+
+    <section class="lower-grid"><article class="card reference-card" id="referencia"><div class="section-heading"><div><p class="eyebrow">GUÍA DE COLOR</p><h2>Tabla de referencia</h2></div><span class="tiny-note">IEC 60062</span></div><div class="table-scroll"><table><thead><tr><th>Color</th><th>Valor</th><th>Multiplicador</th><th>Tolerancia</th><th>ppm/°C</th></tr></thead><tbody id="color-table"></tbody></table></div><p class="table-footnote">La banda de temperatura (6.ª) indica el coeficiente térmico en partes por millón por °C.</p></article>
+      <aside class="card history-card"><div class="section-heading"><div><p class="eyebrow">EN ESTA SESIÓN</p><h2>Historial</h2></div><label class="toggle"><input id="history-enabled" type="checkbox" checked><span class="toggle-track"></span><span class="sr-only">Guardar historial</span></label></div><p class="history-copy">Tus últimos cálculos, guardados solo en este dispositivo.</p><ul id="history-list" class="history-list"><li class="empty-history">Aquí aparecerán tus cálculos.</li></ul><button type="button" id="clear-history" class="text-button">Borrar historial</button></aside>
+    </section>
+    <footer><span>Hecha para entender, medir y seguir.</span><a href="#inicio">Volver arriba ↑</a></footer>
+  </main>
+</body>
+</html>
